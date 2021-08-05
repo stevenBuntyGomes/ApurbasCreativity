@@ -2485,7 +2485,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      keywords: ''
+    };
   },
   mounted: function mounted() {
     this.$store.dispatch('fetchContacts');
@@ -2496,11 +2498,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         contact_id: contact.data.contact_id,
         contact_key: contactKey
       });
+    },
+    fetchContacts: function fetchContacts() {
+      // var data = this;
+      this.$store.dispatch('searchContactKeywords', {
+        keywords: this.keywords
+      });
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getContacts: 'getContacts'
-  }))
+  })),
+  watch: {
+    keywords: function keywords(after, before) {
+      this.fetchContacts();
+    }
+  }
 });
 
 /***/ }),
@@ -88549,7 +88562,7 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "text", placeholder: "search by video name" },
+        attrs: { type: "text", placeholder: "search by contact name" },
         domProps: { value: _vm.keywords },
         on: {
           input: function($event) {
@@ -112454,10 +112467,26 @@ var actions = {
     })["catch"](function (error) {
       console.log(error);
     });
+  },
+  searchContactKeywords: function searchContactKeywords(_ref3, data) {
+    var commit = _ref3.commit,
+        state = _ref3.state;
+    axios.post('/api/search-contact', {
+      keywords: data.keywords
+    }).then(function (response) {
+      // data.search = response.data;
+      // console.log(response.data);
+      commit('searchContact', response.data);
+    })["catch"](function (error) {
+      console.log(error);
+    });
   }
 };
 var mutations = {
   setContacts: function setContacts(state, data) {
+    state.contacts = data;
+  },
+  searchContact: function searchContact(state, data) {
     state.contacts = data;
   },
   setDelContact: function setDelContact(state, data) {

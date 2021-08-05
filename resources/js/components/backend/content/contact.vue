@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class = "row mt-5">
-            <input type="text" class="form-control" placeholder = "search by video name" v-model = "keywords">
+            <input type="text" class="form-control" placeholder = "search by contact name" v-model = "keywords">
             <table class="table table-bordered">
                                         <thead>
                                         <tr>
@@ -35,7 +35,7 @@ import {mapGetters} from 'vuex'
 export default {
     data:() => {
         return {
-
+            keywords: '',
         }
     },
 
@@ -49,7 +49,16 @@ export default {
                 contact_id: contact.data.contact_id,
                 contact_key: contactKey,
             });
-        }
+        },
+
+
+        fetchContacts(){
+                // var data = this;
+                this.$store.dispatch('searchContactKeywords', {
+                    keywords: this.keywords,
+                });
+
+            },
     },
 
 
@@ -57,6 +66,12 @@ export default {
         ...mapGetters({
             getContacts: 'getContacts',
         })
+    },
+
+    watch: {
+        keywords(after, before) {
+            this.fetchContacts();
+        }
     },
 }
 </script>

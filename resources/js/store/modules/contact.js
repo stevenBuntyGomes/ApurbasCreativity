@@ -38,6 +38,20 @@ const actions = {
                         console.log(error);
                     });
     },
+    searchContactKeywords({commit, state}, data){
+        axios.post('/api/search-contact', {
+            keywords: data.keywords,
+
+        })
+                    .then(function (response) {
+                        // data.search = response.data;
+                        // console.log(response.data);
+                        commit('searchContact', response.data);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+    },
 
 
 
@@ -45,6 +59,10 @@ const actions = {
 
 const mutations = {
     setContacts(state, data){
+        state.contacts = data;
+    },
+
+    searchContact(state, data){
         state.contacts = data;
     },
 

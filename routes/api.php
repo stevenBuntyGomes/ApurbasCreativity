@@ -125,6 +125,7 @@ Route::middleware('auth:api')->group(function()  {
     // contact part starts
     Route::post('/get-contact', 'ContactController@getContacts');
     Route::post('/delete-contact', 'ContactController@deleteContact');
+    Route::post('/search-contact', 'ContactController@searchContact');
     // contact part ends
 
 

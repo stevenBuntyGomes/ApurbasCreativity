@@ -49,6 +49,16 @@ class ContactController extends Controller
         }
     }
 
+    public function searchContact(Request $request){
+        if($request->keywords == ''){
+            $contacts = Contact::orderBy('id', 'desc')->get();
+            return new ContactCollection($contacts);
+        }else{
+            $contacts = Contact::where('contact_name', 'like', '%' . $request->keywords . '%')->orderBy('id', 'desc')->get();
+            return new ContactCollection($contacts);
+        }
+    }
+
     public function deleteContact(){
         $data = request()->validate([
             'contact_id' => 'required',
@@ -58,6 +68,9 @@ class ContactController extends Controller
 
         return response()->json('done');
     }
+
+
+
 
     /**
      * Show the form for creating a new resource.
